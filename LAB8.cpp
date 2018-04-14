@@ -30,6 +30,8 @@ group members at the top of the file).
  */
 
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 using namespace std;
 
 struct Minion{
