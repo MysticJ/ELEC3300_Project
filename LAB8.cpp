@@ -35,16 +35,23 @@ using namespace std;
 struct Minion{
 	char Name[10];
 	int Sum;
-	int Status;
+	int Status; // 0: <21, 1: =21, 2: >21;
 	int Cards[21];
 }
 
 int main() {
 	srand(time(NULL));
+	int count=0;
+	Minion Stuart={"Stuart", 0, 0}, Dave={"Dave", 0, 0}, Bob={"Bob", 0, 0};
+	bool over=false;
+	do {
+		over=OneRound(Stuart, Dave, Bob, count);
+		count=count+1;
+	} while (over==false);
 	return 0;
 }
 
-bool GetCard(Minion& x, int count){
+void GetCard(Minion& x, int count){
 	int card = rand()%11;
 	if (card==0){
 		char superOne;
@@ -65,21 +72,22 @@ bool GetCard(Minion& x, int count){
 	x.Sum += card;
 	if (x.Sum==21){
 		cout<<"Mamba Bomba! I got exactly 21!"<<endl;
-		return true;
+		x.Status = 1;
 	}
 	else if (x.Sum>21){
 		cout<<"I feel something bad..."<<endl;
-		return false;
+		x.Status = 2;
 	}
-	return false;
 }
 
 bool Pass(Minion& x, int count){
 	if (x.Sum>=21){
+		cout<<"You cannot more cards..."<<endl;
 		return true;	
 	}
 	else {
 		char pass;
+		// Display
 		cout<<"Above is your cards and their sum."<<endl;
 		cout<<"Do you want to pass or get a new card?"<<endl;
 		do {
@@ -95,25 +103,62 @@ bool Pass(Minion& x, int count){
 	}
 }
 
-bool OnePlayer(Minion& x, int count){
+void OnePlayer(Minion& x, int count){
 	bool pass = Pass(x, count);
-	bool win = false;
 	if (pass==false){
-		win = GetCard(x, count);	
+		GetCard(x, count);	
 	}
-	return win;
 }
 
 bool OneRound(Minion& x, Minion& y, Minion& z, int count){
-	bool win1 = OnePlayer(x, count);
-	if (win1 == true) {
+	OnePlayer(x, count);
+	if (x.Status==1) {
+		Gameover(x, 1);
+		return true;
+	}
+	else if ((x.Status==2)&&(y.Status==2)&&(z.Status==2)){
+		Gameover(x, 2);
 		return true;
 	}
 	else {
-		bool win2 = OnePlayer(y, count);
+		OnePlayer(y, count);
+		if (y.Status==1) {
+			Gameover(y, 1);
+			return true;
+		}
+		else if ((x.Status==2)&&(y.Status==2)&&(z.Status==2)){
+			Gameover(y, 2);
+			return true;
+		}
+		else {
+			OnePlayer(z, count):
+			if (z.Status==1) {
+				Gameover(z, 1);
+				return true;
+			}
+			else if ((x.Status==2)&&(y.Status==2)&&(z.Status==2)){
+				Gameover(z, 2);
+				return true;
+			}
+		}
 	}
+	return false;
 }
 
-void Display(Minion& x){
-	
+void Display(Minion& x, int count){
+	cout<<"Player: "<<x.Name<<"\t\t Sum of Your Cards: "<<x.Sum<<endl;
+	cout<<"Cards you have now: ";
+	for (int i=0; i<=count; i++){
+		cout<<x.Cards[count]<<"  ";	
+	}
+	cout<<endl;
+}
+
+void GameOver(Minion& x, int s){
+	if (s==1){
+		cout<<"Congratulations! "<<x.Name<<" has won the game!"<<endl;
+	}
+	else if (s==2){
+		cout<<"Oh, what a pity! None of you wins..."<<endl;	
+	}
 }
