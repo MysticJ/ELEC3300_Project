@@ -50,9 +50,12 @@ void GameOver(Minion& x, int s);
 void GameOver(Minion& x, Minion& y, Minion& z);
 
 int main() {
+	Minion Stuart={"Stuart", 0, 0, {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+	Minion Dave={"Dave", 0, 0, {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+	Minion Bob={"Bob", 0, 0, {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 	srand(time(NULL));
-	int count=0;
-	Minion Stuart={"Stuart", 0, 0}, Dave={"Dave", 0, 0}, Bob={"Bob", 0, 0};
+	init(Stuart, Dave, Bob);
+	int count=2;
 	bool over=false;
 	do {
 		cout<<"\nROUND "<<count<<"\n"<<endl;
@@ -60,6 +63,15 @@ int main() {
 		count=count+1;
 	} while (over==false);
 	return 0;
+}
+
+void init(Minion& x, Minion& y, Minion& z){
+	GetCard(x, 0);
+	GetCard(y, 0);
+	GetCard(z, 0);
+	GetCard(x, 1);
+	GetCard(y, 1);
+	GetCard(z, 1);
 }
 
 void GetCard(Minion& x, int count){
@@ -119,6 +131,7 @@ bool Pass(Minion& x, int count){
 			return false;
 		}
 	}
+	return false;
 }
 
 void OnePlayer(Minion& x, int count){
