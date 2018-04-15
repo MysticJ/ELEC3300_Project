@@ -48,6 +48,7 @@ bool OneRound(Minion& x, Minion& y, Minion& z, int count);
 void Display(Minion& x, int count);
 void GameOver(Minion& x, int s);
 void GameOver(Minion& x, Minion& y, Minion& z);
+void init(Minion& x, Minion& y, Minion& z);
 
 int main() {
 	Minion Stuart={"Stuart", 0, 0, {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
